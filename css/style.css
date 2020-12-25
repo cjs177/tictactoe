@@ -1,0 +1,76 @@
+*{
+    background: seagreen;
+}
+#gameBoard {
+    /*display: grid;*/
+    grid-template-columns: 200px 200px 200px;
+    grid-template-rows: 200px 200px 200px;
+    margin-left: 34vw;
+    margin-top: 2.5vw;
+    display: none;
+}
+
+.square {
+    background: blue;
+    margin: 5px;
+    text-align: center;
+    font-size: 200px;
+    line-height: 200px;
+}
+
+.square:hover {
+    background: skyblue;
+}
+
+.changeSquare {
+    background: blue;
+    margin: 5px;
+    text-align: center;
+    font-size: 200px;
+    line-height: 200px;
+}
+
+.changeSquare:hover {
+    background: skyblue;
+}
+
+#btns{
+    text-align: center;
+}
+
+#playerBtns{
+    text-align: center;
+    margin-top: 5px;
+}
+
+.twoPlayers, .aiMode{
+    background: #c83200;
+    color: orange;
+    width: 200px;
+    height: 100px;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin: 200px 10px;
+}
+
+.startBtn{
+    background-color: orange;
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #c83200;
+    width: 200px;
+    height: 75px;
+    display: none;
+    /*margin-left: 44vw;*/
+}
+
+.resetBtn {
+    background-color: orange;
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #c83200;
+    width: 200px;
+    height: 75px;
+    display: none;
+    /*margin-left: 44vw;*/
+}
