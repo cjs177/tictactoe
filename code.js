@@ -11,12 +11,12 @@ let gameBoard = (() => {
     return board;
 })();
 
-const players = (symbol, type) => {
-    return{symbol, type};
+const players = (symbol, type, name) => {
+    return{symbol, type, name};
 };
 
-const player1 = players('O', "human");
-const player2 = players('X', "");
+const player1 = players('O', "human", "");
+const player2 = players('X', "", "");
 
 const gameStart = (() => {
     let startBtn = document.querySelector('.startBtn');
@@ -104,16 +104,17 @@ const gameFlow = (() => {
 
                 }
 
+                let didWin = winCheck();
+                if(didWin == true){
+                    currentSymbol = player1.symbol;
+                    return;
+                }
+
                 if(currentSymbol == player1.symbol && player2.type != 'AI') {
                     currentSymbol = player2.symbol;
                 }
                 else
                 currentSymbol = player1.symbol;
-
-                let didWin = winCheck();
-                if(didWin == true){
-                    return;
-                }
 
                 let aiChoice = 1;
                 if(player2.type == 'AI'){
@@ -128,6 +129,7 @@ const gameFlow = (() => {
                     currentSymbol = player1.symbol;
                     didWin = winCheck();
                     if(didWin == true){
+                        currentSymbol = player1.symbol;
                         return;
                     }
 
@@ -168,7 +170,7 @@ function winCheck() {
             (gameBoard[6]  === 'O' && gameBoard[7]  === 'O' && gameBoard[8] === 'O') || (gameBoard[0]  === 'O' && gameBoard[3]  === 'O' && gameBoard[6] === 'O') 
             ||(gameBoard[1]  === 'O' && gameBoard[4]  === 'O' && gameBoard[7] === 'O') ||(gameBoard[2]  === 'O' && gameBoard[5]  === 'O' && gameBoard[8] === 'O') ||
             (gameBoard[0]  === 'O' && gameBoard[4]  === 'O' && gameBoard[8] === 'O') ||(gameBoard[2]  === 'O' && gameBoard[4]  === 'O' && gameBoard[6] === 'O')) {
-                alert("Player 1 Wins");
+                alert(`${player1.name} Wins`);
                 console.log("player 1 Wins");
                 gameOver();
                 return true;
@@ -178,7 +180,13 @@ function winCheck() {
             (gameBoard[6]  === 'X' && gameBoard[7]  === 'X' && gameBoard[8] === 'X') || (gameBoard[0]  === 'X' && gameBoard[3]  === 'X' && gameBoard[6] === 'X') 
             ||(gameBoard[1]  === 'X' && gameBoard[4]  === 'X' && gameBoard[7] === 'X') ||(gameBoard[2]  === 'X' && gameBoard[5]  === 'X' && gameBoard[8] === 'X') ||
             (gameBoard[0]  === 'X' && gameBoard[4]  === 'X' && gameBoard[8] === 'X') ||(gameBoard[2]  === 'X' && gameBoard[4]  === 'X' && gameBoard[6] === 'X')) {
-                alert("Player 2 Wins");
+                if(player2.type == 'AI')
+                {
+                    alert("The AI wins");
+                }
+                else
+                alert(`${player2.name} Wins`);
+                
                 console.log("Player 2 Wins");
                 gameOver();
                 return true
@@ -209,13 +217,20 @@ function gameOver() {
 let aiMode = (() => {
     let aiBtn = document.querySelector('.aiMode');
     let twoPlayersBtn = document.querySelector('.twoPlayers');
+    let player1Name = document.querySelector('#player1');
+    let submit = document.querySelector('.submit');
     let start = document.querySelector('.startBtn');
+    let names = document.querySelector('#names');
     
     aiBtn.addEventListener('click', () => {
         player2.type = 'AI';
         aiBtn.style.display = "none";
         twoPlayersBtn.style.display = "none";
-        start.style.display = 'inline'
+        player1Name.style.display = "inline";
+        submit.style.display = "inline";
+        names.style.display = "flex";
+
+        //start.style.display = 'inline'
 
 
     });
@@ -225,13 +240,41 @@ let humanMode = (() => {
     let aiBtn = document.querySelector('.aiMode');
     let twoPlayersBtn = document.querySelector('.twoPlayers');
     let start = document.querySelector('.startBtn');
+    let player1Name = document.querySelector('#player1');
+    let player2Name = document.querySelector('#player2');
+    let submit = document.querySelector('.submit');
+    let names = document.querySelector('#names');
     
     twoPlayersBtn.addEventListener('click', () => {
         player2.type = '';
         aiBtn.style.display = "none";
         twoPlayersBtn.style.display = "none";
-        start.style.display = 'inline'
+        player1Name.style.display = "inline";
+        player2Name.style.display = "inline";
+        submit.style.display = "inline";
+        names.style.display = "flex";
+        //start.style.display = 'inline'
 
     });
 })();
 
+const setName = (()=> {
+    let start = document.querySelector('.startBtn');
+    let player1Name = document.querySelector('#player1');
+    let player2Name = document.querySelector('#player2');
+    let submit = document.querySelector('.submit');
+    let names = document.querySelector('#names');
+
+    submit.addEventListener('click', () => {
+        player1.name = player1Name.value;
+        player2.name = player2Name.value;
+        player1Name.style.display = "none";
+        player2Name.style.display = "none";
+        submit.style.display = "none";
+        names.style.display = "none";
+        start.style.display = 'inline';
+        player1Name.value = "";
+        player2Name.value = "";
+
+    });
+})();

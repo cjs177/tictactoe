@@ -10,6 +10,40 @@
     display: none;
 }
 
+#names {
+    display: none;
+    flex-direction: column;
+    width: 13%;
+    margin: 10VW 43vw;
+    background: white;
+}
+
+#player1 {
+    text-align: center;
+    background: white;
+    font-size: 1.3rem;
+    display: none;
+}
+
+#player2 {
+    text-align: center;
+    background: white;
+    font-size: 1.3rem;
+    display: none;
+}
+
+.submit {
+    font-size: 1.3rem;
+    background: #c83200;
+    color: orange;
+    display: none;
+}
+
+.submit:hover {
+    background:yellow;
+    color: #c83200;
+}
+
 .square {
     background: blue;
     margin: 5px;
@@ -51,6 +85,12 @@
     font-weight: bold;
     font-size: 1.5rem;
     margin: 200px 10px;
+    /*display: none;*/
+}
+
+.twoPlayers:hover, .aiMode:hover {
+    background:yellow;
+    color: #c83200;
 }
 
 .startBtn{
@@ -64,6 +104,11 @@
     /*margin-left: 44vw;*/
 }
 
+.startBtn:hover {
+    background:yellow;
+    color: #c83200;
+}
+
 .resetBtn {
     background-color: orange;
     font-size: 1.75rem;
@@ -73,4 +118,9 @@
     height: 75px;
     display: none;
     /*margin-left: 44vw;*/
+}
+
+.resetBtn:hover {
+    background:yellow;
+    color: #c83200;
 }
