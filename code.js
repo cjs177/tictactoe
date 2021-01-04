@@ -1,4 +1,4 @@
-let gameBoard = (() => {
+const gameBoard = (() => {
     const board = [];
     let gameContainer = document.querySelector('#gameBoard');
     for(let i = 0; i < 9; i++){
@@ -110,55 +110,27 @@ const gameFlow = (() => {
                     return;
                 }
 
-                if(currentSymbol == player1.symbol && player2.type != 'AI') {
+                if(currentSymbol == player1.symbol && player2.type != 'AI') 
+                    {
                     currentSymbol = player2.symbol;
                 }
                 else
                 currentSymbol = player1.symbol;
 
-                let aiChoice = 1;
-                if(player2.type == 'AI'){
 
-                while(aiChoice !== ""){
-                aiChoice = Math.floor(Math.random()*9);
-                //console.log(aiChoice);
-                if (gameBoard[aiChoice] == "" || gameBoard[aiChoice]== undefined) {
-                    gameBoard[aiChoice] = 'X';
-                    let markSquare = document.querySelector(`.square${aiChoice}`);
-                    markSquare.innerHTML = 'X';
-                    currentSymbol = player1.symbol;
+                if(player2.type == 'AI'){
+                    bestMove();
                     didWin = winCheck();
                     if(didWin == true){
                         currentSymbol = player1.symbol;
                         return;
                     }
 
-                    aiChoice = "";
-                    }
-                }
-            }
-            }
-            /*if((gameBoard[0]  === 'O' && gameBoard[1]  === 'O' && gameBoard[2] === 'O') || (gameBoard[3]  === 'O' && gameBoard[4]  === 'O' && gameBoard[5] === 'O') ||
-            (gameBoard[6]  === 'O' && gameBoard[7]  === 'O' && gameBoard[8] === 'O') || (gameBoard[0]  === 'O' && gameBoard[3]  === 'O' && gameBoard[6] === 'O') 
-            ||(gameBoard[1]  === 'O' && gameBoard[4]  === 'O' && gameBoard[7] === 'O') ||(gameBoard[2]  === 'O' && gameBoard[5]  === 'O' && gameBoard[8] === 'O') ||
-            (gameBoard[0]  === 'O' && gameBoard[4]  === 'O' && gameBoard[8] === 'O') ||(gameBoard[2]  === 'O' && gameBoard[4]  === 'O' && gameBoard[6] === 'O')) {
-                alert("Player 1 Wins");
-                gameOver(squares);
-                
-            }
-            else if((gameBoard[0]  === 'X' && gameBoard[1]  === 'X' && gameBoard[2] === 'X') || (gameBoard[3]  === 'X' && gameBoard[4]  === 'X' && gameBoard[5] === 'X') ||
-            (gameBoard[6]  === 'X' && gameBoard[7]  === 'X' && gameBoard[8] === 'X') || (gameBoard[0]  === 'X' && gameBoard[3]  === 'X' && gameBoard[6] === 'X') 
-            ||(gameBoard[1]  === 'X' && gameBoard[4]  === 'X' && gameBoard[7] === 'X') ||(gameBoard[2]  === 'X' && gameBoard[5]  === 'X' && gameBoard[8] === 'X') ||
-            (gameBoard[0]  === 'X' && gameBoard[4]  === 'X' && gameBoard[8] === 'X') ||(gameBoard[2]  === 'X' && gameBoard[4]  === 'X' && gameBoard[6] === 'X')) {
-                console.log("Player 2 Wins");
-                gameOver(squares);
-            }
 
-            else if(gameBoard[0] && gameBoard[1] && gameBoard[2] && gameBoard[3] && gameBoard[4] && gameBoard[5] && gameBoard[6] && gameBoard[7] && gameBoard[8]) {
-                alert("The game is a tie");
-                gameOver(squares);
-            }*/
-        });
+                    }
+
+            }
+            });
           
             
     });
@@ -214,7 +186,7 @@ function gameOver() {
 
 }
 
-let aiMode = (() => {
+const aiMode = (() => {
     let aiBtn = document.querySelector('.aiMode');
     let twoPlayersBtn = document.querySelector('.twoPlayers');
     let player1Name = document.querySelector('#player1');
@@ -236,7 +208,7 @@ let aiMode = (() => {
     });
 })();
 
-let humanMode = (() => {
+const humanMode = (() => {
     let aiBtn = document.querySelector('.aiMode');
     let twoPlayersBtn = document.querySelector('.twoPlayers');
     let start = document.querySelector('.startBtn');
@@ -278,3 +250,82 @@ const setName = (()=> {
 
     });
 })();
+
+function bestMove(){
+    let bestScore = -Infinity;
+    let bestMove;
+    
+    for(let i = 0; i < 9; i++){
+        if(gameBoard[i] == '' || gameBoard[i] == undefined){
+            gameBoard[i] = 'X';
+            let score = minimax(gameBoard, 0, false);
+            gameBoard[i] = '';
+            if(score > bestScore){
+                bestScore = score;
+                bestMove = i;
+            }
+        }
+    }
+    console.log(bestMove);
+    gameBoard[bestMove] = 'X';
+    let square = document.querySelector(`.square${bestMove}`);
+    square.innerHTML = 'X';
+}
+
+function evaluate(gameBoard){
+    let winningScore = null;
+    if((gameBoard[0]  === 'O' && gameBoard[1]  === 'O' && gameBoard[2] === 'O') || (gameBoard[3]  === 'O' && gameBoard[4]  === 'O' && gameBoard[5] === 'O') ||
+            (gameBoard[6]  === 'O' && gameBoard[7]  === 'O' && gameBoard[8] === 'O') || (gameBoard[0]  === 'O' && gameBoard[3]  === 'O' && gameBoard[6] === 'O') 
+            ||(gameBoard[1]  === 'O' && gameBoard[4]  === 'O' && gameBoard[7] === 'O') ||(gameBoard[2]  === 'O' && gameBoard[5]  === 'O' && gameBoard[8] === 'O') ||
+            (gameBoard[0]  === 'O' && gameBoard[4]  === 'O' && gameBoard[8] === 'O') ||(gameBoard[2]  === 'O' && gameBoard[4]  === 'O' && gameBoard[6] === 'O')) {
+                winningScore = -10;
+                return winningScore;
+            }
+
+    else if((gameBoard[0]  === 'X' && gameBoard[1]  === 'X' && gameBoard[2] === 'X') || (gameBoard[3]  === 'X' && gameBoard[4]  === 'X' && gameBoard[5] === 'X') ||
+            (gameBoard[6]  === 'X' && gameBoard[7]  === 'X' && gameBoard[8] === 'X') || (gameBoard[0]  === 'X' && gameBoard[3]  === 'X' && gameBoard[6] === 'X') 
+            ||(gameBoard[1]  === 'X' && gameBoard[4]  === 'X' && gameBoard[7] === 'X') ||(gameBoard[2]  === 'X' && gameBoard[5]  === 'X' && gameBoard[8] === 'X') ||
+            (gameBoard[0]  === 'X' && gameBoard[4]  === 'X' && gameBoard[8] === 'X') ||(gameBoard[2]  === 'X' && gameBoard[4]  === 'X' && gameBoard[6] === 'X')) {
+                winningScore = 10;
+                return winningScore;
+            }
+
+    else
+        for(let i = 0; i < 9; i++){
+            if(gameBoard[i] == "" || gameBoard[i == undefined])
+            return winningScore;
+        }
+    return 0;
+
+}
+
+function minimax(gameBoard, depth, isMaximum) {
+    let result = evaluate(gameBoard);
+    if(result !== null){
+        return result;
+    }
+    if(isMaximum == true){
+        let bestScore = -Infinity;
+        for(let i = 0; i < 9; i++){
+            if(gameBoard[i] == '') {
+                gameBoard[i] = 'X';
+                let score = minimax(gameBoard, depth+1, false);
+                gameBoard[i] = '';
+                bestScore = Math.max(score, bestScore);
+            }
+        }
+        return bestScore - depth;
+    }
+    else{
+        let bestScore = Infinity;
+        for(let i = 0; i < 9; i++){
+            if(gameBoard[i] == '') {
+                gameBoard[i] = 'O';
+                let score = minimax(gameBoard, depth+1, true);
+                gameBoard[i] = '';
+                bestScore = Math.min(score, bestScore);
+            }
+        }
+        return bestScore + depth;
+    }
+}

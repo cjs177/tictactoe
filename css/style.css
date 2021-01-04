@@ -1,6 +1,12 @@
 *{
     background: seagreen;
 }
+
+#title {
+    color: orange;
+    text-align: center;
+    font-size: 3rem;
+}
 #gameBoard {
     /*display: grid;*/
     grid-template-columns: 200px 200px 200px;
